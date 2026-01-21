@@ -1,6 +1,7 @@
 import type { EmitStoriesEntrypointConfig, StoryModuleData } from './types';
 import path from 'node:path';
 import { isObject } from '@krutoo/utils';
+import { formatPathname } from './utils';
 
 interface StoryTemplateProps {
   config: Required<EmitStoriesEntrypointConfig>;
@@ -34,14 +35,14 @@ ${DefaultExport({ config, entries })}
 function StoryImport({ config, story, index }: StoryTemplateProps) {
   const importPath = path.relative(path.dirname(config.filename), story.filename);
 
-  return `import * as Story${index} from '${importPath}';`;
+  return `import * as Story${index} from '${formatPathname(importPath)}';`;
 }
 
 function StorySourceImport({ config, story, index }: StoryTemplateProps) {
   const { rawImport } = config;
   const importPath = path.relative(path.dirname(config.filename), story.filename);
 
-  return `import Story${index}Src from '${rawImport({ importPath }).importPath}';`;
+  return `import Story${index}Src from '${rawImport({ importPath: formatPathname(importPath) }).importPath}';`;
 }
 
 function StoryExtraSourceImports({ config, story, index }: StoryTemplateProps) {
@@ -59,7 +60,7 @@ function StoryExtraSourceImports({ config, story, index }: StoryTemplateProps) {
         path.resolve(path.dirname(story.filename), sourcePath),
       );
 
-      return `import Story${index}ExtraSrc${sourceIndex} from '${rawImport({ importPath }).importPath}';`;
+      return `import Story${index}ExtraSrc${sourceIndex} from '${rawImport({ importPath: formatPathname(importPath) }).importPath}';`;
     })
     .join('\n');
 }
