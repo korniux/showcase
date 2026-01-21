@@ -29,7 +29,7 @@ export function defaultRawImport(moduleData: { importPath: string }): { importPa
   };
 }
 
-/** @private */
+/** @internal */
 export function formatPathname(pathname: string) {
   if (pathname === '.' || pathname.startsWith('./') || pathname.startsWith('/')) {
     return pathname;
